@@ -16,7 +16,7 @@ namespace NSW.Logging.Files
         private readonly object _lock = new object();
 
         private bool _terminated;
-        private int _counter = 0;
+        private long _counter = 0;
         private string _filePath;
         private readonly Dictionary<string, int> _lengths = new Dictionary<string, int>();
         private readonly ConcurrentQueue<LogEntry> _infoQueue = new ConcurrentQueue<LogEntry>();
