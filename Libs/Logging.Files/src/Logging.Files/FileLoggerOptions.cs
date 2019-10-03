@@ -10,7 +10,7 @@ namespace NSW.Logging.Files
     {
         private string _folder;
         private string _fileName;
-        private int _maxFileSizeInMb;
+        private int _maxFileSizeInMB;
         private int _retainPolicyFileCount;
  
         public LogLevel LogLevel { get; set; } = LogLevel.Information;
@@ -44,8 +44,8 @@ namespace NSW.Logging.Files
 
         public int MaxFileSizeInMB
         {
-            get => _maxFileSizeInMb > 0 ? _maxFileSizeInMb : 2;
-            set => _maxFileSizeInMb = value;
+            get => _maxFileSizeInMB > 0 ? _maxFileSizeInMB : 2;
+            set => _maxFileSizeInMB = value;
         }
  
         public int RetainPolicyFileCount
