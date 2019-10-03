@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,7 +17,6 @@ namespace NSW.Logging.Files
         private bool _terminated;
         private long _counter = 0;
         private string _filePath;
-        private readonly Dictionary<string, int> _lengths = new Dictionary<string, int>();
         private readonly ConcurrentQueue<LogEntry> _infoQueue = new ConcurrentQueue<LogEntry>();
 
         private void ApplyRetainPolicy()
