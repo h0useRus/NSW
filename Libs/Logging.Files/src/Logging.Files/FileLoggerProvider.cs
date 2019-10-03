@@ -147,7 +147,7 @@ namespace NSW.Logging.Files
 
                 string text = info.Text;
 
-                if (info.Exception != null)
+                if (info.Exception != null && Settings.AlwaysAddExceptions)
                 {
                     text += info.Exception.ToString();
                 }

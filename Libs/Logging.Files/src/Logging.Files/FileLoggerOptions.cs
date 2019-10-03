@@ -1,3 +1,4 @@
+using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
@@ -7,10 +8,10 @@ namespace NSW.Logging.Files
 {
     public class FileLoggerOptions
     {
-        string _folder;
-        string _fileName;
-        int _maxFileSizeInMB;
-        int _retainPolicyFileCount;
+        private string _folder;
+        private string _fileName;
+        private int _maxFileSizeInMb;
+        private int _retainPolicyFileCount;
  
         public LogLevel LogLevel { get; set; } = LogLevel.Information;
 
@@ -20,21 +21,31 @@ namespace NSW.Logging.Files
 
         public string Folder
         {
-            get => !string.IsNullOrWhiteSpace(_folder) ? _folder : System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_folder))
+                    _folder = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? Directory.GetCurrentDirectory();
+                return _folder;
+            }
             set => _folder = value;
         }
 
         public string FileName
         {
-            get => !string.IsNullOrWhiteSpace(_fileName) ? _fileName : Assembly.GetEntryAssembly()?.GetName().Name;
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_fileName))
+                    _fileName = Assembly.GetEntryAssembly()?.GetName().Name ?? "log";
+                return _fileName;
+            }
             set => _fileName = value;
         }
 
 
         public int MaxFileSizeInMB
         {
-            get => _maxFileSizeInMB > 0 ? _maxFileSizeInMB : 2;
-            set => _maxFileSizeInMB = value;
+            get => _maxFileSizeInMb > 0 ? _maxFileSizeInMb : 2;
+            set => _maxFileSizeInMb = value;
         }
  
         public int RetainPolicyFileCount
