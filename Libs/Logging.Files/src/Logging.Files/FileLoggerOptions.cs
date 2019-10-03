@@ -20,13 +20,13 @@ namespace NSW.Logging.Files
 
         public string Folder
         {
-            get => !string.IsNullOrWhiteSpace(_folder) ? _folder : System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            get => !string.IsNullOrWhiteSpace(_folder) ? _folder : System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
             set => _folder = value;
         }
 
         public string FileName
         {
-            get => !string.IsNullOrWhiteSpace(_fileName) ? _fileName : Assembly.GetExecutingAssembly().GetName().Name;
+            get => !string.IsNullOrWhiteSpace(_fileName) ? _fileName : Assembly.GetEntryAssembly()?.GetName().Name;
             set => _fileName = value;
         }
 
