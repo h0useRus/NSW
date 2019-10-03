@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Description>Simple file provider for Microsoft.Extensions.Logging</Description>
+    <Copyright>Copyright © 2019-2020 NewSoftWorld</Copyright>
+    <AssemblyTitle>NSW.Logging.Files</AssemblyTitle>
+    <Authors>Denis Ibragimov</Authors>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyName>NSW.Logging.Files</AssemblyName>
+    <RootNamespace>NSW.Logging.Files</RootNamespace>
+    <PackageId>NSW.Logging.Files</PackageId>
+    <PackageTags>Logging;File</PackageTags>
+    <PackageProjectUrl>https://github.com/h0useRus/</PackageProjectUrl>
+    <LangVersion>8</LangVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>
+      Initial version
+    </PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="3.0.0" />
+  </ItemGroup>
+
+</Project>
