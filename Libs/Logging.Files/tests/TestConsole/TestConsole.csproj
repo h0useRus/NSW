@@ -4,11 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Program.cs~RF571ee811.TMP" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\..\src\Logging.Files\Logging.Files.csproj" />
   </ItemGroup>
