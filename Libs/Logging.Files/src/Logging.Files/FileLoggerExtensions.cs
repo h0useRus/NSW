@@ -23,8 +23,7 @@ namespace NSW.Logging.Files
             return builder;
         }
  
-        public static ILoggingBuilder AddFileLogger
-            (this ILoggingBuilder builder, Action<FileLoggerOptions> configure)
+        public static ILoggingBuilder AddFileLogger (this ILoggingBuilder builder, Action<FileLoggerOptions> configure)
         {
             if (configure == null)
             {

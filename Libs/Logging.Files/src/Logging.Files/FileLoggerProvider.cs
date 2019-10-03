@@ -13,6 +13,8 @@ namespace NSW.Logging.Files
     [ProviderAlias("File")]
     public sealed class FileLoggerProvider : LoggerProvider
     {
+        private readonly object _lock = new object();
+
         private bool _terminated;
         private int _counter = 0;
         private string _filePath;
@@ -190,9 +192,22 @@ namespace NSW.Logging.Files
                 }
             });
 
+
+        private void Flush()
+        {
+            lock (_lock)
+            {
+                while (!_infoQueue.IsEmpty)
+                {
+                    WriteLogLine();
+                }
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             _terminated = true;
+            Flush();
             base.Dispose(disposing);
         }
 
@@ -204,8 +219,9 @@ namespace NSW.Logging.Files
 
         public FileLoggerProvider(FileLoggerOptions settings)
         {
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+
             PrepareLengths();
-            Settings = settings;
             BeginFile();
             ThreadProc();
         }
