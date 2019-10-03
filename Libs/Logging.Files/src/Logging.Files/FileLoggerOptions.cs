@@ -15,7 +15,9 @@ namespace NSW.Logging.Files
  
         public LogLevel LogLevel { get; set; } = LogLevel.Information;
 
-        public LogTemplate Template { get; set; } = LogTemplate.Application;
+        public FileLogTemplate Template { get; set; } = FileLogTemplate.Application;
+
+        public bool AddTitles { get; set; } = true;
 
         public bool AlwaysAddExceptions { get; set; } = true;
 

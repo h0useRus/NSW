@@ -67,55 +67,22 @@ namespace NSW.Logging.Files
             return text.Length > maxLength ? text.Substring(0, maxLength) : text.PadRight(maxLength);
         }
 
-        private void PrepareLengths()
-        {
-            if (Settings.Template == LogTemplate.Service)
-            {
-                _lengths["Time"] = 24;
-                _lengths["Host"] = 16;
-                _lengths["User"] = 16;
-                _lengths["Level"] = 6;
-                _lengths["EventId"] = 32;
-                _lengths["Category"] = 60;
-                _lengths["Scope"] = 64;
-            }
-            else
-            {
-                _lengths["Time"] = 24;
-                _lengths["Level"] = 6;
-                _lengths["EventId"] = 10;
-                _lengths["Category"] = 60;
-            }
-        }
-
         private void BeginFile()
         {
             Directory.CreateDirectory(Settings.Folder);
-            var sourceName = Settings.Template == LogTemplate.Service ? LogEntry.StaticHostName : Settings.FileName;
-            _filePath = Path.Combine(Settings.Folder, sourceName + "-" + DateTime.Now.ToString("yyMMdd-HHmmss") + ".log");
+            _filePath = Path.Combine(Settings.Folder, Settings.FileName + "-" + DateTime.Now.ToString("yyMMdd-HHmmss") + ".log");
 
-            // titles
-            var sb = new StringBuilder();
-            if (Settings.Template == LogTemplate.Service)
+            if (Settings.AddTitles)
             {
-                sb.Append(Pad("Time", _lengths["Time"]));
-                sb.Append(Pad("Host", _lengths["Host"]));
-                sb.Append(Pad("User", _lengths["User"]));
-                sb.Append(Pad("Level", _lengths["Level"]));
-                sb.Append(Pad("EventId", _lengths["EventId"]));
-                sb.Append(Pad("Category", _lengths["Category"]));
-                sb.Append(Pad("Scope", _lengths["Scope"]));
+                var sb = new StringBuilder();
+                foreach (var column in Settings.Template)
+                {
+                    sb.Append(Pad(column.Value.Name, column.Value.Size));
+                }
+
                 sb.AppendLine("Text");
+                File.WriteAllText(_filePath, sb.ToString());
             }
-            else
-            {
-                sb.Append(Pad("Time", _lengths["Time"]));
-                sb.Append(Pad("Level", _lengths["Level"]));
-                sb.Append(Pad("EventId", _lengths["EventId"]));
-                sb.Append(Pad("Category", _lengths["Category"]));
-                sb.AppendLine("Text");
-            }
-            File.WriteAllText(_filePath, sb.ToString());
             ApplyRetainPolicy();
         }
 
@@ -124,32 +91,17 @@ namespace NSW.Logging.Files
             if (_infoQueue.TryDequeue(out var info))
             {
                 var sb = new StringBuilder();
-                sb.Append(Pad(info.TimeStampUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.ff"), _lengths["Time"]));
-                if (Settings.Template == LogTemplate.Service)
-                {
-                    sb.Append(Pad(info.HostName, _lengths["Host"]));
-                    sb.Append(Pad(info.UserName, _lengths["User"]));
-                }
-                sb.Append(Pad(ToShortString(info.Level), _lengths["Level"]));
-                sb.Append(Pad(info.EventId.ToString(), _lengths["EventId"]));
-                sb.Append(Pad(info.Category, _lengths["Category"]));
 
-                if (Settings.Template == LogTemplate.Service && info.Scopes != null && info.Scopes.Count > 0)
+                foreach (var column in Settings.Template)
                 {
-                    var str = "";
-                    var si = info.Scopes.Last();
-                    if (!string.IsNullOrWhiteSpace(si.Text))
-                    {
-                        str = si.Text;
-                    }
-                    sb.Append(Pad(str, _lengths["Scope"]));
+                    sb.Append(Pad(column.Value.Formatter(info), column.Value.Size));
                 }
-
+                
                 string text = info.Text;
 
                 if (info.Exception != null && Settings.AlwaysAddExceptions)
                 {
-                    text += info.Exception.ToString();
+                    text += $" Exception: {info.Exception}";
                 }
 
                 if (!string.IsNullOrWhiteSpace(text))
@@ -221,7 +173,6 @@ namespace NSW.Logging.Files
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
-            PrepareLengths();
             BeginFile();
             ThreadProc();
         }
