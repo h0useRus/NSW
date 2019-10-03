@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
@@ -12,7 +12,7 @@
     <RootNamespace>NSW.Logging.Files</RootNamespace>
     <PackageId>NSW.Logging.Files</PackageId>
     <PackageTags>Logging;File</PackageTags>
-    <PackageProjectUrl>https://github.com/h0useRus/</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/h0useRus/NSW/tree/master/Libs/Logging.Files</PackageProjectUrl>
     <LangVersion>8</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>
